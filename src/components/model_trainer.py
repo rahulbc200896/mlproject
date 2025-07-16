@@ -46,6 +46,6 @@ class Model_Trainer:
             else:
                 save_obj(self.model_trainer.model_trainer_file_path,best_model)
             
-            return (best_model_score)
+            return (best_model_name,best_model_score)
         except Exception as e:
             raise CustomException(e,sys)

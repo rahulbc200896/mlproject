@@ -48,4 +48,6 @@ if __name__ == '__main__':
     data_transformer = Data_Transformation()
     train_arr,test_arr,_ = data_transformer.initiate_data_transformation(train_data,test_data)
     model_trainer = Model_Trainer()
-    print(model_trainer.initiate_model_trainer(train_arr,test_arr))
+    best_model_name,best_model_score = model_trainer.initiate_model_trainer(train_arr,test_arr)
+    print("Best model: ",best_model_name)
+    print("Model Accuracy: ",best_model_score)
