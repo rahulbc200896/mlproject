@@ -11,6 +11,7 @@ from sklearn.svm import SVR
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import RandomForestRegressor,AdaBoostRegressor,GradientBoostingRegressor
 from xgboost import XGBRFRegressor
+from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import r2_score
 
 def save_obj(file_path,obj):
@@ -25,12 +26,16 @@ def save_obj(file_path,obj):
     except Exception as e:
         raise CustomException(e,sys)
 
-def evaluate_model(x_train,x_test,y_train,y_test,models):
+def evaluate_model(x_train,x_test,y_train,y_test,models,params):
     try:
         model_report = {}
         logging.info("Model training started")
         for i in range(len(list(models))):
             model = list(models.values())[i]
+            param = params[list(models.keys())[i]]
+            gs = GridSearchCV(estimator=model,param_grid=param,cv=3)
+            gs.fit(x_train,y_train)
+            model.set_params(**gs.best_params_)
             model.fit(x_train,y_train)
             y_test_pred = model.predict(x_test)
             r2score = r2_score(y_test,y_test_pred)
